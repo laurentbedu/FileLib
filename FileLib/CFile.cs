@@ -13,7 +13,7 @@ namespace FileLib
 
         public CFile(string fileName, string directoryPath = "")
         {
-            //TODO ...
+            //TODO Check fileName and directoryPath
             string fullFileName = Path.Combine(directoryPath, fileName);
             Info = new FileInfo(fullFileName);
         }
@@ -39,27 +39,56 @@ namespace FileLib
         }
 
         
-        public bool Delete()
+        public bool? Delete()
+        {
+            try
+            {
+                if (Exists)
+                {
+                    Info.Delete();
+                }
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+            return !Exists;
+        }
+
+        public bool? WriteText(string text, bool owerWrite = false)
+        {
+            try
+            {
+                Create(owerWrite);
+                File.AppendAllText(Info.FullName, text);
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+            return true;
+        }
+
+        public string? ReadText()
+        {
+            string? result;
+            try
+            {
+                result = File.ReadAllText(Info.FullName);
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+            return result;
+        }
+
+        public bool CopyTo(string directoryPath, string renamedFileName = "", bool overWrite = false)
         {
             return false;
         }
 
-        public bool WriteText(string text) 
-        { 
-            return false; 
-        }
-
-        public string ReadText()
-        {
-            return "";
-        }
-
-        public bool CopyTo(string destFolder)
-        {
-            return false;
-        }
-
-        public bool MoveTo(string destFolder)
+        public bool MoveTo(string directoryPath, string renamedFileName = "", bool overWrite = false)
         {
             return false;
         }
